@@ -27,9 +27,6 @@ namespace KvízJáték
         int score;
 
 
-
-
-
         public MainWindow()
         {
             InitializeComponent();
@@ -41,22 +38,25 @@ namespace KvízJáték
         private void checkAnswer(object sender, RoutedEventArgs e)
         {
             Button senderButton = sender as Button;
-
+            MessageBox.Show(senderButton.Tag.ToString());
             if (senderButton.Tag.ToString() == "1")
             {
                 score++;
+                scoreText.Content = "Jól válaszoltál!" + score + "/" + questionNubers.Count;
             }
-            if (qNum < 0)
+            qNum++;
+            if (score == 10)
             {
-                qNum = 0;
+                MessageBox.Show("Sikeresen oldottad meg a kvízt!" + Environment.NewLine + "Nyomd meg az OK gombot az újrakezdéshez!");
+                System.Diagnostics.Process.Start(Application.ResourceAssembly.Location);
+                Application.Current.Shutdown();
             }
-            else
+            else if (qNum == 10)
             {
-                qNum++;
+                MessageBox.Show("Hibás, próbáld újra!" + Environment.NewLine + "Nyomd meg az OK gombot az újrakezdéshez!");
+                System.Diagnostics.Process.Start(Application.ResourceAssembly.Location);
+                Application.Current.Shutdown();
             }
-
-            scoreText.Content = "Jól válaszoltál!" + score + "/" + questionNubers.Count;
-
             NextQuestion();
 
         }
@@ -210,7 +210,7 @@ namespace KvízJáték
                     ans3.Content = "Audi RS6 avant";
                     ans4.Content = "Answer4";
 
-                    ans3.Tag = "9";
+                    ans3.Tag = "1";
 
                     qImage.Source = new BitmapImage(new Uri("pack://application:,,,/képek/rs6.jpg"));
 
@@ -231,24 +231,12 @@ namespace KvízJáték
 
                     break;
             }
-
-            if (score == 10)
-            {
-                MessageBox.Show("Sikeresen oldottad meg a kvízt!" + Environment.NewLine + "Nyomd meg az OK gombot az újrakezdéshez!");
-                System.Diagnostics.Process.Start(Application.ResourceAssembly.Location);
-                Application.Current.Shutdown();
-            }
-            else if ()
-            {
-                MessageBox.Show("Hibás, próbáld újra!" + Environment.NewLine + "Nyomd meg az OK gombot az újrakezdéshez!");
-                System.Diagnostics.Process.Start(Application.ResourceAssembly.Location);
-                Application.Current.Shutdown();
-            }
+            
         }
     private void RestartGame()
         {
             score = 0;
-            qNum = -1;
+            qNum = 0;
             StartGame();
         }
 
